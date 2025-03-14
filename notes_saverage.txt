@@ -1,0 +1,70 @@
+npm install express
+npm install cors
+npm install mongoose
+npm install body-parser
+
+
+GRADE:
+
+const studentSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    grades: { type: [Number], required: true }, // Array of numbers for grades
+    averageGrade: { type: Number }
+});
+
+
+POST
+
+if (!name || !Array.isArray(grades) || grades.length === 0) {
+            return res.status(400).json({ message: 'Invalid input. Name and at least one grade are required.' });
+        }
+
+const averageGrade = grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+
+
+SUBJECT + GRADES
+
+const studentSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    subjects: [
+        {
+            subject: { type: String, required: true },
+            grade: { type: Number, required: true }
+        }
+    ],
+    averageGrade: { type: Number }
+});
+
+const totalGrades = subjects.reduce((sum, sub) => sum + sub.grade, 0);
+        const averageGrade = totalGrades / subjects.length;
+
+
+TUITION 
+
+const studentSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    tuitionFee: { type: Number, required: true },
+    paymentMethod: { type: String, enum: ['Cash', 'Installment'], required: true },
+    discount: { type: Number, default: 0 },
+    totalPayable: { type: Number }
+});
+
+const { name, tuitionFee, paymentMethod } = req.body;
+
+        if (!tuitionFee || tuitionFee <= 0) {
+            return res.status(400).json({ message: 'Tuition fee must be greater than zero.' });
+        }
+
+        let discount = 0;
+        let totalPayable = tuitionFee;
+
+        if (paymentMethod === 'Cash') {
+            discount = tuitionFee * 0.10; // 10% discount
+            totalPayable = tuitionFee - discount;
+        }
+
+        const newStudent = new Student({ name, tuitionFee, paymentMethod, discount, totalPayable });
+        const student = await newStudent.save();
+
+
+
