@@ -36,7 +36,7 @@ const studentSchema = new mongoose.Schema({
 });
 
 const totalGrades = subjects.reduce((sum, sub) => sum + sub.grade, 0);
-        const averageGrade = totalGrades / subjects.length;
+const averageGrade = totalGrades / subjects.length;
 
 
 TUITION 
@@ -67,4 +67,11 @@ const { name, tuitionFee, paymentMethod } = req.body;
         const student = await newStudent.save();
 
 
+COMPUTE
+const studentId = req.params.id;  // Get student ID from URL
+        const { subjects } = req.body;    // Get updated subjects & grades
+        
+        // Compute average grade
+        const grades = subjects.map(sub => sub.grade);  // Extract grades
+        const average = grades.reduce((sum, g) => sum + g, 0) / grades.length;
 
